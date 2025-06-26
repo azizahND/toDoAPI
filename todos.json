@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "title": "Belajar Cloud Computing",
+    "description": "Mengerjakan tugas besar komputasi awan",
+    "completed": true,
+    "dueDate": "2025-06-25",
+    "createdAt": "2025-06-16T13:00:00Z"
+  }
+]

@@ -3,11 +3,9 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// In-memory storage untuk todos
 let todos = [
   {
     id: 1,
@@ -27,10 +25,8 @@ let todos = [
   }
 ];
 
-// Counter untuk ID auto increment
 let nextId = 3;
 
-// Helper function untuk format response
 const successResponse = (message, data = null) => {
   return {
     status: "success",
@@ -46,7 +42,6 @@ const errorResponse = (message) => {
   };
 };
 
-// GET /api/todos - Mengambil seluruh data to-do
 app.get('/api/todos', (req, res) => {
   try {
     res.json(successResponse("Data retrieved successfully", todos));
@@ -55,7 +50,6 @@ app.get('/api/todos', (req, res) => {
   }
 });
 
-// POST /api/todos - Menambahkan to-do baru
 app.post('/api/todos', (req, res) => {
   try {
     const { title, description, dueDate } = req.body;
@@ -82,7 +76,6 @@ app.post('/api/todos', (req, res) => {
   }
 });
 
-// GET /api/todos/:id - Mengambil detail to-do berdasarkan ID
 app.get('/api/todos/:id', (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -103,7 +96,6 @@ app.get('/api/todos/:id', (req, res) => {
   }
 });
 
-// PUT /api/todos/:id - Memperbarui to-do berdasarkan ID
 app.put('/api/todos/:id', (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -120,7 +112,6 @@ app.put('/api/todos/:id', (req, res) => {
     
     const { title, description, completed, dueDate } = req.body;
     
-    // Update todo dengan data baru (hanya field yang diberikan)
     if (title !== undefined) todos[todoIndex].title = title.trim();
     if (description !== undefined) todos[todoIndex].description = description.trim();
     if (completed !== undefined) todos[todoIndex].completed = Boolean(completed);
@@ -132,7 +123,6 @@ app.put('/api/todos/:id', (req, res) => {
   }
 });
 
-// DELETE /api/todos/:id - Menghapus to-do berdasarkan ID
 app.delete('/api/todos/:id', (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -154,7 +144,6 @@ app.delete('/api/todos/:id', (req, res) => {
   }
 });
 
-// Health check endpoint
 app.get('/health', (req, res) => {
   res.json({
     status: "success",
@@ -163,18 +152,15 @@ app.get('/health', (req, res) => {
   });
 });
 
-// 404 handler
 app.use('*', (req, res) => {
   res.status(404).json(errorResponse("Endpoint not found"));
 });
 
-// Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json(errorResponse("Something went wrong!"));
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Health check: http://localhost:${PORT}/health`);
